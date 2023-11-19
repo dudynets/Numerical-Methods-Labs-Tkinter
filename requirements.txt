@@ -1,0 +1,6 @@
+seaborn~=0.13.0
+customtkinter~=5.2.1
+matplotlib~=3.8.1
+numpy~=1.26.2
+sympy~=1.12
+PyQt6~=6.6.0
