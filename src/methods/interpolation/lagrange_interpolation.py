@@ -24,6 +24,7 @@ class LagrangeInterpolationPage(customtkinter.CTkScrollableFrame):
         )
 
         self.matrix_size = 4
+        self.default_x_value = 0
         self.default_number_of_points = 100
         self.matrix = []
         self.matrix_frame = None
@@ -42,21 +43,31 @@ class LagrangeInterpolationPage(customtkinter.CTkScrollableFrame):
 
         self.create_matrix()
 
+        self.x_value_label = customtkinter.CTkLabel(
+            self, text="Точка для інтерполювання (X):", anchor="w"
+        )
+        self.x_value_label.grid(
+            row=3, column=0, padx=(10, 0), pady=10, sticky="ew"
+        )
+        self.x_value_entry = customtkinter.CTkEntry(self)
+        self.x_value_entry.grid(row=3, column=2, padx=0, pady=10, sticky="ew")
+        self.x_value_entry.insert(0, self.default_x_value)
+
         self.number_of_points_label = customtkinter.CTkLabel(
             self, text="Кількість точок:", anchor="w"
         )
         self.number_of_points_label.grid(
-            row=3, column=0, padx=(10, 0), pady=10, sticky="ew"
+            row=4, column=0, padx=(10, 0), pady=10, sticky="ew"
         )
         self.number_of_points_entry = customtkinter.CTkEntry(self)
-        self.number_of_points_entry.grid(row=3, column=2, padx=0, pady=10, sticky="ew")
+        self.number_of_points_entry.grid(row=4, column=2, padx=0, pady=10, sticky="ew")
         self.number_of_points_entry.insert(0, self.default_number_of_points)
 
         self.calculate_button = customtkinter.CTkButton(
             self, text="Розрахувати", command=self.calculate_lagrange_interpolation
         )
         self.calculate_button.grid(
-            row=4, column=0, columnspan=2, padx=(10, 0), pady=(20, 10), sticky="w"
+            row=5, column=0, columnspan=2, padx=(10, 0), pady=(20, 10), sticky="w"
         )
 
     def update_size(self):
@@ -177,6 +188,15 @@ class LagrangeInterpolationPage(customtkinter.CTkScrollableFrame):
                 x_values = np.array(x_values, dtype=float)
                 y_values = np.array(y_values, dtype=float)
 
+                x_value = self.x_value_entry.get()
+
+                try:
+                    x_value = float(x_value)
+                except ValueError:
+                    self.x_value_entry.delete(0, "end")
+                    self.x_value_entry.insert(0, self.default_x_value)
+                    x_value = self.default_x_value
+
                 number_of_points = self.number_of_points_entry.get()
 
                 try:
@@ -217,9 +237,28 @@ class LagrangeInterpolationPage(customtkinter.CTkScrollableFrame):
                 )
                 y_interpolation = polynomial(x_interpolation)
 
-                return x_interpolation, y_interpolation
+                interpolated_x_value = polynomial(x_value)
 
-            x_interpolation, y_interpolation = implementation(x_values, y_values)
+                return x_interpolation, y_interpolation, x_value, interpolated_x_value
+
+            x_interpolation, y_interpolation, x_value, interpolated_x_value = implementation(x_values, y_values)
+
+            self.result_subtitle_label = customtkinter.CTkLabel(
+                self,
+                text="Результат:",
+                font=customtkinter.CTkFont(size=16, weight="bold"),
+            )
+            self.result_subtitle_label.grid(
+                row=6, column=0, columnspan=2, padx=(10, 0), pady=(10, 0), sticky="w"
+            )
+
+            self.result_label = customtkinter.CTkLabel(
+                self, text=f'f({x_value}) = {interpolated_x_value}', justify="left"
+            )
+            self.result_label.grid(
+                row=7, column=0, columnspan=2, padx=(10, 0), pady=0, sticky="w"
+            )
+
             self.plot_interpolation(
                 x_values, y_values, x_interpolation, y_interpolation
             )
@@ -231,12 +270,12 @@ class LagrangeInterpolationPage(customtkinter.CTkScrollableFrame):
                 font=customtkinter.CTkFont(size=16, weight="bold"),
             )
             self.error_subtitle_label.grid(
-                row=5, column=0, columnspan=2, padx=(10, 0), pady=(10, 0), sticky="w"
+                row=6, column=0, columnspan=2, padx=(10, 0), pady=(10, 0), sticky="w"
             )
 
             self.error_label = customtkinter.CTkLabel(self, text=f"{str(e)}")
             self.error_label.grid(
-                row=6, column=0, columnspan=2, padx=(10, 0), pady=0, sticky="w"
+                row=7, column=0, columnspan=2, padx=(10, 0), pady=0, sticky="w"
             )
 
     def plot_interpolation(self, x_values, y_values, x_interpolation, y_interpolation):
