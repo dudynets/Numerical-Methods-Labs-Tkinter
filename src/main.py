@@ -1,4 +1,3 @@
-import os.path
 import tkinter
 
 import customtkinter
@@ -39,10 +38,6 @@ class App(customtkinter.CTk):
         super().__init__()
 
         self.title("Чисельні методи")
-        self.wm_iconphoto(
-            False,
-            tkinter.PhotoImage(file=os.path.dirname(__file__) + "/assets/icon.png"),
-        )
         self.geometry("1000x600")
         self.minsize(1000, 600)
 
@@ -339,5 +334,5 @@ class RightSidePanel(customtkinter.CTkFrame):
 
 
 if __name__ == "__main__":
-    a = App()
-    a.mainloop()
+    app = App()
+    app.mainloop()
