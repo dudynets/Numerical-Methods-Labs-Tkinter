@@ -189,8 +189,8 @@ class SecantMethodPage(customtkinter.CTkScrollableFrame):
 
             for i in range(len(x_values) - 1):
                 if (
-                        x_values[i] < 0 < x_values[i + 1]
-                        or x_values[i] > 0 > x_values[i + 1]
+                    x_values[i] < 0 < x_values[i + 1]
+                    or x_values[i] > 0 > x_values[i + 1]
                 ):
                     x_values = np.insert(x_values, i + 1, 0)
                     break

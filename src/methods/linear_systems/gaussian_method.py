@@ -1,5 +1,4 @@
 import customtkinter
-import numpy as np
 from matplotlib import pyplot as plt
 
 
@@ -182,29 +181,35 @@ class GaussianMethodPage(customtkinter.CTkScrollableFrame):
                 constants_vector.append(coefficients_row[-1])
 
             def implementation(coefficient_matrix, constants):
-                coefficient_matrix = np.array(coefficient_matrix, dtype=float)
-                constants = np.array(constants, dtype=float)
-                n = len(coefficient_matrix)
-                x = np.zeros(n)
+                A = coefficient_matrix
+                b = constants
+                n = len(A)
+                for i in range(n):
+                    max_row = i
+                    for k in range(i + 1, n):
+                        if abs(A[k][i]) > abs(A[max_row][i]):
+                            max_row = k
+                    A[i], A[max_row] = A[max_row], A[i]
+                    b[i], b[max_row] = b[max_row], b[i]
 
-                for j in range(n):
-                    if coefficient_matrix[j][j] == 0:
-                        raise ValueError(
-                            f"Ділення на нуль виникло під час виконання методу Гауса."
-                        )
+                    pivot = A[i][i]
+                    for k in range(i, n):
+                        A[i][k] /= pivot
+                    b[i] /= pivot
 
-                    for k in range(j + 1, n):
-                        factor = coefficient_matrix[k][j] / coefficient_matrix[j][j]
-                        coefficient_matrix[k] -= factor * coefficient_matrix[j]
-                        constants[k] -= factor * constants[j]
+                    for k in range(n):
+                        if k != i:
+                            factor = A[k][i]
+                            for j in range(i, n):
+                                A[k][j] -= factor * A[i][j]
+                            b[k] -= factor * b[i]
 
-                for j in range(n - 1, -1, -1):
-                    x[j] = (
-                                   constants[j]
-                                   - np.dot(coefficient_matrix[j][j + 1: n], x[j + 1: n])
-                           ) / coefficient_matrix[j][j]
+                    for i in range(n):
+                        for j in range(n):
+                            A[i][j] = round(A[i][j], 6)
+                        b[i] = round(b[i], 6)
 
-                return x
+                return b
 
             roots = implementation(coefficients_matrix, constants_vector)
 

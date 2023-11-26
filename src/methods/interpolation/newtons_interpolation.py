@@ -202,8 +202,8 @@ class NewtonsInterpolationPage(customtkinter.CTkScrollableFrame):
                     for j in range(1, n):
                         for i in range(n - j):
                             coefficients[i][j] = (
-                                                         coefficients[i + 1][j - 1] - coefficients[i][j - 1]
-                                                 ) / (x[i + j] - x[i])
+                                coefficients[i + 1][j - 1] - coefficients[i][j - 1]
+                            ) / (x[i + j] - x[i])
 
                     return coefficients
 
