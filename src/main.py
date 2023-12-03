@@ -15,6 +15,9 @@ from methods.non_linear.fixed_point_iteration_method import (
 )
 from methods.non_linear.newtons_method import NewtonsMethodPage
 from methods.non_linear.secant_method import SecantMethodPage
+from src.methods.integration.rectangles import RectanglesMethodPage
+from src.methods.integration.simpsons import SimpsonsMethodPage
+from src.methods.integration.trapezoidal import TrapezoidalMethodPage
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -156,6 +159,34 @@ class NavigationPanel(customtkinter.CTkScrollableFrame):
         self.lagrange_interpolation_button.grid(row=11, padx=10, pady=10)
         self.lagrange_interpolation_button.grid_configure(sticky="we")
 
+        # Integration
+
+        self.integration_label = customtkinter.CTkLabel(
+            self,
+            text="Інтегрування:",
+            font=customtkinter.CTkFont(size=16, weight="bold"),
+        )
+        self.integration_label.grid(row=12, padx=10, pady=10)
+        self.integration_label.grid_configure(sticky="w")
+
+        self.rectangles_button = customtkinter.CTkButton(
+            self, text="Метод прямокутників", command=self.show_rectangles_page
+        )
+        self.rectangles_button.grid(row=13, padx=10, pady=10)
+        self.rectangles_button.grid_configure(sticky="we")
+
+        self.trapezoidal_button = customtkinter.CTkButton(
+            self, text="Метод трапецій", command=self.show_trapezoidal_page
+        )
+        self.trapezoidal_button.grid(row=14, padx=10, pady=10)
+        self.trapezoidal_button.grid_configure(sticky="we")
+
+        self.simpsons_button = customtkinter.CTkButton(
+            self, text="Метод Сімпсона", command=self.show_simpsons_page
+        )
+        self.simpsons_button.grid(row=15, padx=10, pady=10)
+        self.simpsons_button.grid_configure(sticky="we")
+
         self.quit_button = customtkinter.CTkButton(
             self,
             text="Вийти",
@@ -163,7 +194,7 @@ class NavigationPanel(customtkinter.CTkScrollableFrame):
             hover_color="#B20000",
             command=master.quit,
         )
-        self.quit_button.grid(row=12, padx=10, pady=10)
+        self.quit_button.grid(row=16, padx=10, pady=10)
         self.quit_button.grid_configure(sticky="we")
 
     def show_newtons_page(self):
@@ -245,6 +276,36 @@ class NavigationPanel(customtkinter.CTkScrollableFrame):
         self.active_button = self.lagrange_interpolation_button
         self.active_button.configure(state="disabled")
         self.right_panel.show_lagrange_interpolation_page()
+
+    def show_rectangles_page(self):
+        plt.close("all")
+
+        if self.active_button:
+            self.active_button.configure(state="normal")
+
+        self.active_button = self.rectangles_button
+        self.active_button.configure(state="disabled")
+        self.right_panel.show_rectangles_page()
+
+    def show_trapezoidal_page(self):
+        plt.close("all")
+
+        if self.active_button:
+            self.active_button.configure(state="normal")
+
+        self.active_button = self.trapezoidal_button
+        self.active_button.configure(state="disabled")
+        self.right_panel.show_trapezoidal_page()
+
+    def show_simpsons_page(self):
+        plt.close("all")
+
+        if self.active_button:
+            self.active_button.configure(state="normal")
+
+        self.active_button = self.simpsons_button
+        self.active_button.configure(state="disabled")
+        self.right_panel.show_simpsons_page()
 
 
 class RightSidePanel(customtkinter.CTkFrame):
@@ -328,6 +389,36 @@ class RightSidePanel(customtkinter.CTkFrame):
             self.current_page.pack_forget()
 
         self.current_page = LagrangeInterpolationPage(self)
+        self.current_page.pack(
+            side=tkinter.LEFT, fill=tkinter.BOTH, expand=True, padx=5, pady=5
+        )
+
+    def show_rectangles_page(self):
+        if self.current_page:
+            self.current_page.destroy()
+            self.current_page.pack_forget()
+
+        self.current_page = RectanglesMethodPage(self)
+        self.current_page.pack(
+            side=tkinter.LEFT, fill=tkinter.BOTH, expand=True, padx=5, pady=5
+        )
+
+    def show_trapezoidal_page(self):
+        if self.current_page:
+            self.current_page.destroy()
+            self.current_page.pack_forget()
+
+        self.current_page = TrapezoidalMethodPage(self)
+        self.current_page.pack(
+            side=tkinter.LEFT, fill=tkinter.BOTH, expand=True, padx=5, pady=5
+        )
+
+    def show_simpsons_page(self):
+        if self.current_page:
+            self.current_page.destroy()
+            self.current_page.pack_forget()
+
+        self.current_page = SimpsonsMethodPage(self)
         self.current_page.pack(
             side=tkinter.LEFT, fill=tkinter.BOTH, expand=True, padx=5, pady=5
         )
