@@ -1,4 +1,5 @@
 import customtkinter
+import numpy as np
 from matplotlib import pyplot as plt
 
 
@@ -183,6 +184,10 @@ class GaussianMethodPage(customtkinter.CTkScrollableFrame):
             def implementation(coefficient_matrix, constants):
                 A = coefficient_matrix
                 b = constants
+
+                A_temp = np.array(A, dtype=int)
+                det = np.linalg.det(A_temp)
+
                 n = len(A)
                 for i in range(n):
                     max_row = i
@@ -208,6 +213,11 @@ class GaussianMethodPage(customtkinter.CTkScrollableFrame):
                         for j in range(n):
                             A[i][j] = round(A[i][j], 6)
                         b[i] = round(b[i], 6)
+
+                if np.abs(det) <= 1e-6:
+                    raise ValueError(
+                        f"Визначник дорівнює нулю.\nСистема лінійних рівнянь має нескінченну кількість розв'язків. \n\nОдин з можливих розв'язків:\n{b}"
+                    )
 
                 return b
 
@@ -242,7 +252,7 @@ class GaussianMethodPage(customtkinter.CTkScrollableFrame):
                 row=4, column=0, columnspan=2, padx=(10, 0), pady=(10, 0), sticky="w"
             )
 
-            self.error_label = customtkinter.CTkLabel(self, text=f"{str(e)}")
+            self.error_label = customtkinter.CTkLabel(self, text=f"{str(e)}", justify="left", anchor="w")
             self.error_label.grid(
                 row=5, column=0, columnspan=2, padx=(10, 0), pady=0, sticky="w"
             )
