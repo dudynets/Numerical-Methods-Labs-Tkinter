@@ -5,6 +5,9 @@ import matplotlib
 import seaborn
 from matplotlib import pyplot as plt
 
+from methods.integration.rectangles import RectanglesMethodPage
+from methods.integration.simpsons import SimpsonsMethodPage
+from methods.integration.trapezoidal import TrapezoidalMethodPage
 from methods.interpolation.lagrange_interpolation import LagrangeInterpolationPage
 from methods.interpolation.newtons_interpolation import NewtonsInterpolationPage
 from methods.linear_systems.fixed_point_system import FixedPointSystemPage
@@ -15,9 +18,6 @@ from methods.non_linear.fixed_point_iteration_method import (
 )
 from methods.non_linear.newtons_method import NewtonsMethodPage
 from methods.non_linear.secant_method import SecantMethodPage
-from src.methods.integration.rectangles import RectanglesMethodPage
-from src.methods.integration.simpsons import SimpsonsMethodPage
-from src.methods.integration.trapezoidal import TrapezoidalMethodPage
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
