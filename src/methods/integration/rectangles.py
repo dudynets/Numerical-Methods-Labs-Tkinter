@@ -126,7 +126,7 @@ class RectanglesMethodPage(customtkinter.CTkScrollableFrame):
                 row=6, column=0, columnspan=2, padx=(10, 0), pady=(10, 0), sticky="w"
             )
 
-            self.result_label = customtkinter.CTkLabel(self, text=f"x = {result:.6f}")
+            self.result_label = customtkinter.CTkLabel(self, text=f"{result:.6f}")
             self.result_label.grid(
                 row=7, column=0, columnspan=2, padx=(10, 0), pady=0, sticky="w"
             )
